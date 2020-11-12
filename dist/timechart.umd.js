@@ -1496,14 +1496,14 @@ void main() {
     };
     class TimeChart {
         constructor(el, options) {
-            var _a, _b;
+            var _a, _b, _c;
             this.el = el;
             this.disposed = false;
             options = options !== null && options !== void 0 ? options : {};
             const series = (_b = (_a = options.series) === null || _a === void 0 ? void 0 : _a.map(s => this.completeSeriesOptions(s))) !== null && _b !== void 0 ? _b : [];
             const renderOptions = Object.assign(Object.assign(Object.assign({}, defaultOptions), options), { series });
             this.model = new RenderModel(renderOptions);
-            const shadowRoot = el.attachShadow({ mode: 'open' });
+            const shadowRoot = (_c = el.shadowRoot) !== null && _c !== void 0 ? _c : el.attachShadow({ mode: 'open' });
             const style = document.createElement('style');
             style.innerText = `
 :host {
