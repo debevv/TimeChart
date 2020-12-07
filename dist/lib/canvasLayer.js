@@ -16,9 +16,10 @@ export class CanvasLayer {
     constructor(el, options, model) {
         this.options = options;
         const canvas = document.createElement('canvas');
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.style.position = 'absolute';
+        const style = canvas.style;
+        style.position = 'absolute';
+        style.width = style.height = '100%';
+        style.left = style.right = style.top = style.bottom = '0';
         el.shadowRoot.appendChild(canvas);
         this.gl = getContext(canvas, options.forceWebGL1);
         const bgColor = resolveColorRGBA(options.backgroundColor);

@@ -1,9 +1,10 @@
 export class SVGLayer {
     constructor(el, model) {
         this.svgNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        this.svgNode.style.position = 'absolute';
-        this.svgNode.style.width = '100%';
-        this.svgNode.style.height = '100%';
+        const style = this.svgNode.style;
+        style.position = 'absolute';
+        style.width = style.height = '100%';
+        style.left = style.right = style.top = style.bottom = '0';
         el.shadowRoot.appendChild(this.svgNode);
         model.disposing.on(() => {
             el.shadowRoot.removeChild(this.svgNode);
