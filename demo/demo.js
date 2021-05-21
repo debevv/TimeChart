@@ -60,5 +60,9 @@ function main() {
     });
     document.getElementById('tooltip-btn').addEventListener('click', function () {
         chart.options.tooltip = !chart.options.tooltip;
+    })
+    document.getElementById('legend-btn').addEventListener('click', function () {
+        chart.options.legend = !chart.options.legend;
+        chart.update();
     });
 }
