@@ -3,12 +3,12 @@ import { RenderModel } from './renderModel';
 
 function getContext(canvas: HTMLCanvasElement, forceWebGL1: boolean) {
     if (!forceWebGL1) {
-        const ctx = canvas.getContext('webgl2');
+        const ctx = canvas.getContext('webgl2', { antialias: true });
         if (ctx) {
             return ctx;
         }
     }
-    const ctx = canvas.getContext('webgl');
+    const ctx = canvas.getContext('webgl', { antialias: true });
     if (ctx) {
         return ctx;
     }
@@ -28,6 +28,9 @@ export class CanvasLayer {
         el.shadowRoot!.appendChild(canvas);
 
         this.gl = getContext(canvas, options.forceWebGL1);
+
+        this.gl.enable(this.gl.SAMPLE_COVERAGE);
+        this.gl.sampleCoverage(0.5, false);
 
         const bgColor = resolveColorRGBA(options.backgroundColor);
         this.gl.clearColor(...bgColor);
