@@ -15,9 +15,10 @@
     "scripts": {
         "demo": "http-server -c1 -o /demo/index.html",
         "build": "tsc --outDir dist/lib --declarationDir dist/types --declaration true && rollup -c",
-        "start": "rollup -c -w",
+        "start": "rollup -c -w && http-server -c1 -o /demo/index.html",
         "test": "jest",
-        "prepare": "npm run build"
+        "prepare": "npm run build",
+        "dev": "rollup -c -w"
     },
     "author": "huww98 <huww98@outlook.com>",
     "license": "MIT",
@@ -41,6 +42,7 @@
         "http-server": "^0.12.3",
         "jest": "^26.6.1",
         "rollup": "^2.32.1",
+        "rollup-plugin-serve": "^1.1.0",
         "rollup-plugin-terser": "^7.0.2",
         "ts-jest": "^26.4.2",
         "typescript": "^4.0.3"
