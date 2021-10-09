@@ -10,9 +10,9 @@ export const crosshair: TimeChartPlugin<void> = {
         const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
         style.textContent = `
 .timechart-crosshair {
-    stroke: currentColor;
+    stroke: #bebebe99;
     stroke-width: 1;
-    stroke-dasharray: 2 1;
+    stroke-dasharray: 6;
     visibility: hidden;
 }`;
         const hLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
