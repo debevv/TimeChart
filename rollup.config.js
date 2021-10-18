@@ -18,6 +18,16 @@ const config = {
             format: 'umd',
             sourcemap: true
         },
+        {
+            file: 'dist/timechart.min.js',
+            globals(id) {
+                return id.startsWith('d3-') ? 'd3' : id;
+            },
+            name: 'TimeChart',
+            format: 'iife',
+            plugins: [terser()],
+            sourcemap: true
+        },
         { file: 'dist/timechart.module.js', format: 'es', sourcemap: true },
     ],
     external: (id) => id.startsWith('d3-'),
@@ -35,19 +45,41 @@ const config = {
     ],
 }
 
-const minConfig = {
-    ...config,
-    output: {
-        ...config.output[0],
-        file: `dist/timechart.min.js`
+const configPluginsExtra = {
+    input: `src/plugins_extra/index.ts`,
+    output: [
+        {
+            file: 'dist/timechart.plugins_extra.js',
+            globals(id) {
+                return id.startsWith('d3-') ? 'd3' : id;
+            },
+            name: 'TimeChart.plugins_extra',
+            format: 'umd',
+            sourcemap: true
+        },
+        {
+            file: 'dist/timechart.plugins_extra.min.js',
+            globals(id) {
+                return id.startsWith('d3-') ? 'd3' : id;
+            },
+            name: 'TimeChart.plugins_extra',
+            format: 'iife',
+            plugins: [terser()],
+            sourcemap: true
+        },
+    ],
+    external: (id) => id.startsWith('d3-'),
+    watch: {
+        include: 'src/plugins_extra/**',
     },
     plugins: [
-        ...config.plugins,
-        terser(),
-    ]
-};
+        typescript(),
+        commonjs(),
+        resolve(),
+    ],
+}
 
 export default [
     config,
-    minConfig,
-]
+    configPluginsExtra,
+];

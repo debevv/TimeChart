@@ -1,5 +1,7 @@
-import { ColorSpaceObject, ColorCommonInstance, rgb } from 'd3-color';
-import { DataPoint } from './renderModel';
+import { ColorCommonInstance, ColorSpaceObject, rgb } from 'd3-color';
+import * as zoomOptions from './chartZoom/options';
+import { DataPoint } from './core/renderModel';
+import { TimeChartPlugin } from './plugins';
 
 type ColorSpecifier = ColorSpaceObject | ColorCommonInstance | string
 
@@ -11,14 +13,18 @@ interface AxisZoomOptions {
     maxDomainExtent: number;
 }
 
+export interface ResolvedAxisZoomOptions extends zoomOptions.ResolvedAxisOptions {
+    autoRange: boolean;
+}
+
 export interface ZoomOptions {
     x?: Partial<AxisZoomOptions>;
     y?: Partial<AxisZoomOptions>;
 }
 
 export interface ResolvedZoomOptions {
-    x?: AxisZoomOptions;
-    y?: AxisZoomOptions;
+    x?: ResolvedAxisZoomOptions;
+    y?: ResolvedAxisZoomOptions;
 }
 
 interface ScaleBase {
@@ -57,20 +63,24 @@ interface TimeChartRenderOptions {
     forceWebGL1: boolean;
 }
 
-interface TimeChartOptionsBase extends TimeChartRenderOptions {
-}
+export type TimeChartPlugins = Readonly<Record<string, TimeChartPlugin>>;
+export type NoPlugin = Readonly<Record<string, never>>;
 
-export interface TimeChartOptions extends Partial<TimeChartOptionsBase> {
+export type TimeChartOptions<TPlugins extends TimeChartPlugins> =
+    TimeChartOptionsBase &
+    (NoPlugin extends TPlugins ? {plugins?: Record<string, never>} : {plugins: TPlugins});
+
+export interface TimeChartOptionsBase extends Partial<TimeChartRenderOptions> {
     series?: Partial<TimeChartSeriesOptions>[];
     zoom?: ZoomOptions;
 }
 
-export interface ResolvedRenderOptions extends TimeChartRenderOptions {
+export interface ResolvedCoreOptions extends TimeChartRenderOptions {
     series: TimeChartSeriesOptions[];
 }
 
-export interface ResolvedOptions extends ResolvedRenderOptions {
-    zoom?: ResolvedZoomOptions;
+export interface ResolvedOptions extends ResolvedCoreOptions {
+    zoom: ResolvedZoomOptions;
 }
 
 export interface TimeChartSeriesOptions {

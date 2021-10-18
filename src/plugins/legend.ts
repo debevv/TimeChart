@@ -1,12 +1,13 @@
-import { ResolvedRenderOptions, TimeChartSeriesOptions } from "./options";
-import { RenderModel } from './renderModel';
+import { RenderModel } from "../core/renderModel";
+import { ResolvedCoreOptions, TimeChartSeriesOptions } from "../options";
+import { TimeChartPlugin } from ".";
 
 export class Legend {
     legend: HTMLElement;
     items = new Map<TimeChartSeriesOptions, { item: HTMLElement; example: HTMLElement; }>();
     itemContainer: Node;
 
-    constructor(private el: HTMLElement, private model: RenderModel, private options: ResolvedRenderOptions) {
+    constructor(private el: HTMLElement, private model: RenderModel, private options: ResolvedCoreOptions) {
         this.legend = document.createElement('chart-legend');
         const ls = this.legend.style;
         ls.position = 'absolute';
@@ -42,11 +43,13 @@ export class Legend {
 
         this.itemContainer = legendRoot;
         this.update();
-        el.shadowRoot!.appendChild(this.legend);
+
+        const shadowRoot = el.shadowRoot!
+        shadowRoot.appendChild(this.legend);
         model.updated.on(() => this.update());
 
         model.disposing.on(() => {
-            el.shadowRoot!.removeChild(this.legend);
+            shadowRoot.removeChild(this.legend);
         })
     }
 
@@ -79,5 +82,11 @@ export class Legend {
             item.example.style.height = `${s.lineWidth ?? this.options.lineWidth}px`;
             item.example.style.backgroundColor = s.color.toString();
         }
+    }
+}
+
+export const legend: TimeChartPlugin<Legend> = {
+    apply(chart) {
+        return new Legend(chart.el, chart.model, chart.options);
     }
 }

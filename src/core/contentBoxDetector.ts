@@ -1,14 +1,9 @@
-import { ResolvedRenderOptions } from './options';
+import { ResolvedCoreOptions } from '../options';
 import { RenderModel } from './renderModel';
 
 export class ContentBoxDetector {
-    static meta = {
-        name: 'contentBoxDetector',
-        required: ['wrapper', 'options'],
-        optional: ['svgLayer', 'canvasLayer'],
-    };
     node: HTMLElement;
-    constructor(el: HTMLElement, model: RenderModel, options: ResolvedRenderOptions) {
+    constructor(el: HTMLElement, model: RenderModel, options: ResolvedCoreOptions) {
         this.node = document.createElement('div');
         this.node.style.position = 'absolute';
         this.node.style.left = `${options.paddingLeft}px`;
